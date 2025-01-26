@@ -17,13 +17,47 @@ class BankAccountTest {
     void withdrawTest() throws InsufficientFundsException{
         BankAccount bankAccount = new BankAccount("a@b.com", 200);
         bankAccount.withdraw(100);
-
         assertEquals(100, bankAccount.getBalance(), 0.001);
         assertThrows(InsufficientFundsException.class, () -> bankAccount.withdraw(300));
+        
+        //Boundary: Withdraw amount exceeds balance by .01 (float case) Tests just above maximum valid Withdrawal
+        assertThrows(InsufficientFundsException.class, () -> bankAccount.withdraw(100.01));
+        //Boundary: Withdraw amount exceeds balance by 1 (int case) Tests just above maximum valid Withdrawal
+        assertThrows(InsufficientFundsException.class, () -> bankAccount.withdraw(101));
+        //Boundary: Withdraw amount is .01 less than 0 (float case) Tests Minimum invalid negative Withdrawal
+        assertThrows(InsufficientFundsException.class, () -> bankAccount.withdraw(-0.01));
+        //Boundary: Withdraw amount is 1 less than 0 (int case) Tests Minimum invalid negative Withdrawal
+        assertThrows(InsufficientFundsException.class, () -> bankAccount.withdraw(-1));
+
+
+        //Boundary: Withdraw amount is 1 less than balance (int case) //Tests just below the maximum valid Withdrawal
+        bankAccount.withdraw(99);
+        assertEquals(1, bankAccount.getBalance(), 0.001);
+        //Boundary: Withdraw amount is .01 less than balance (float case) //Tests just below the maximum valid Withdrawal
+        BankAccount newAccount = new BankAccount("z@x.y", 100);
+        newAccount.withdraw(99.99);
+        assertEquals(0.01, newAccount.getBalance(), 0.001);
+        //Partition: Withdraw amount is 0 //Tests 0 Withdrawal
+        bankAccount.withdraw(0);
+        assertEquals(1, bankAccount.getBalance(), 0.001);
+        //Boundary: Withdraw amount is .01 (float case) //Tests just above the minimum valid Withdrawal
+        bankAccount.withdraw(0.01);
+        assertEquals(0.99, bankAccount.getBalance(), 0.001);
+        //Boundary: Withdraw amount is 1 (int case) //Tests just above the minimum valid Withdrawal
+        BankAccount thirdAccount = new BankAccount("x@y.z", 1000);
+        thirdAccount.withdraw(1);
+        assertEquals(999, thirdAccount.getBalance(), 0.001);
+        //Partition: Withdraw amount is nominal value within range of balance
+        thirdAccount.withdraw(300);
+        assertEquals(699, thirdAccount.getBalance(), 0.001);
+        //Partition: Withdraw amount is float value within range of balance
+        thirdAccount.withdraw(30.50);
+        assertEquals(668.50, thirdAccount.getBalance(), 0.001);
     }
 
     @Test
     void isEmailValidTest(){
+
         //Invalid Test Cases
         //Partition: Empty string
         assertFalse(BankAccount.isEmailValid(""), "Emails must be invalid if they are blank");         // empty string
