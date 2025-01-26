@@ -11,6 +11,38 @@ class BankAccountTest {
         BankAccount bankAccount = new BankAccount("a@b.com", 200);
 
         assertEquals(200, bankAccount.getBalance(), 0.001);
+
+        //Boundary: Balance is 0 (minimum valid balance)
+        BankAccount newAccount = new BankAccount("z@x.y", 0);
+        assertEquals(0, newAccount.getBalance(), 0.001);
+        //Boundary: Balance is 0.01 (float case) (minimum valid balance)
+        BankAccount thirdAccount = new BankAccount("x@y.z", 0.01);
+        assertEquals(0.01, thirdAccount.getBalance(), 0.001);
+        //Boundary: Balance is 1 (int case) (just above minimum)
+        BankAccount fourthAccount = new BankAccount("y@z.x", 1);
+        assertEquals(1, fourthAccount.getBalance(), 0.001);
+        //Partition: Balance is nominal value
+        BankAccount fifthAccount = new BankAccount("a@b.c", 1105);
+        assertEquals(1105, fifthAccount.getBalance(), 0.001);
+        //Partition: Balance is nominal float value
+        BankAccount sixthAccount = new BankAccount("b@c.d", 60.50);
+        assertEquals(60.50, sixthAccount.getBalance(), 0.001);
+        //Boundary: Balance is 999999999 (int case) (just below maximum valid balance)
+        BankAccount seventhAccount = new BankAccount("c@d.e", 999999999);
+        assertEquals(999999999, seventhAccount.getBalance(), 0.001);
+        //Boundary: Balance is 999999999.99 (float case) (just below maximum valid balance)
+        BankAccount eighthAccount = new BankAccount("d@e.f", 999999999.99);
+        assertEquals(999999999.99, eighthAccount.getBalance(), 0.001);
+        //Boundary: Balance is 1000000000 (int case) (maximum valid balance)
+        BankAccount ninthAccount = new BankAccount("e@f.g", 1000000000);
+        assertEquals(1000000000, ninthAccount.getBalance(), 0.001);
+        //Boundary: Balance is 999999999.99 (float case) (maximum valid balance)
+        BankAccount tenthAccount = new BankAccount("f@g.h", 999999999.99);
+        assertEquals(999999999.99, tenthAccount.getBalance(), 0.001);
+
+        //(Above and below maximum and minimum valid balances will be tested on the constructor tests)
+
+
     }
 
     @Test
