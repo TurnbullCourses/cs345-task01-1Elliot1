@@ -90,6 +90,8 @@ class BankAccountTest {
     @Test
     void isEmailValidTest(){
 
+        // hello testing git 
+
         //Invalid Test Cases
         //Partition: Empty string
         assertFalse(BankAccount.isEmailValid(""), "Emails must be invalid if they are blank");         // empty string
