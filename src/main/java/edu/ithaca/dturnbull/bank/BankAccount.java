@@ -41,11 +41,18 @@ public class BankAccount {
 
 
     public static boolean isEmailValid(String email){
+        // Check if the email is empty + test if git push is working
+        if (email == null || email.isEmpty()) {
+        return false;
+        }
+        
         if (email.indexOf('@') == -1){
             return false;
         }
+        
         else {
             return true;
         }
+
     }
 }
