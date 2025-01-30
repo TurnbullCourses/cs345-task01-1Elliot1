@@ -8,10 +8,9 @@ class BankAccountTest {
 
     @Test
     void getBalanceTest() {
+        //Partition: Balance is 200 (nominal value)
         BankAccount bankAccount = new BankAccount("a@b.com", 200);
-
         assertEquals(200, bankAccount.getBalance(), 0.001);
-
         //Boundary: Balance is 0 (minimum valid balance)
         BankAccount newAccount = new BankAccount("z@x.y", 0);
         assertEquals(0, newAccount.getBalance(), 0.001);
