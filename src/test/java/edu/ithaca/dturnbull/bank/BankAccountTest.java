@@ -50,7 +50,12 @@ class BankAccountTest {
         bankAccount.withdraw(100);
         assertEquals(100, bankAccount.getBalance(), 0.001);
         assertThrows(InsufficientFundsException.class, () -> bankAccount.withdraw(300));
-        
+        BankAccount anotherAccount = new BankAccount("elliot@ithaca.edu", 100);
+        //Boundary: Withdraw amount has exactly one additional decimal place
+        assertThrows(IllegalArgumentException.class, () -> anotherAccount.withdraw(99.001));
+        //Partition: Withdraw amount is exact balance
+        anotherAccount.withdraw(100);
+        assertEquals(0, anotherAccount.getBalance(), 0.001);
         //Boundary: Withdraw amount exceeds balance by .01 (float case) Tests just above maximum valid Withdrawal
         assertThrows(InsufficientFundsException.class, () -> bankAccount.withdraw(100.01));
         //Boundary: Withdraw amount exceeds balance by 1 (int case) Tests just above maximum valid Withdrawal
@@ -59,7 +64,6 @@ class BankAccountTest {
         assertThrows(IllegalArgumentException.class, () -> bankAccount.withdraw(-0.01));
         //Boundary: Withdraw amount is 1 less than 0 (int case) Tests Minimum invalid negative Withdrawal
         assertThrows(IllegalArgumentException.class, () -> bankAccount.withdraw(-1));
-        //TODO: Try withdrawal of exact balance, too many decimals, 
 
         //Boundary: Withdraw amount is 1 less than balance (int case) //Tests just below the maximum valid Withdrawal
         bankAccount.withdraw(99);
@@ -155,11 +159,21 @@ class BankAccountTest {
     @Test
     void constructorTest() {
         BankAccount bankAccount = new BankAccount("a@b.com", 200);
-
+        
+        //Valid Partition: Valid email and starting balance
         assertEquals("a@b.com", bankAccount.getEmail());
         assertEquals(200, bankAccount.getBalance(), 0.001);
-        //check for exception thrown correctly
-        assertThrows(IllegalArgumentException.class, ()-> new BankAccount("", 100));
+
+        //Invalid Partition: Invalid email
+        assertThrows(IllegalArgumentException.class, () -> new BankAccount("", 100));
+        //Invalid Partition: Negative starting balance
+        assertThrows(IllegalArgumentException.class,
+            () -> new BankAccount("valid@domain.com", -0.01),
+            "Should throw for negative starting balance");
+        //Invalid Boundary: Starting balance has one more than 2 decimal places
+        assertThrows(IllegalArgumentException.class,
+            () -> new BankAccount("valid@domain.com", 100.001),
+            "Should throw for amounts with more than 2 decimals");
     }
 
 }

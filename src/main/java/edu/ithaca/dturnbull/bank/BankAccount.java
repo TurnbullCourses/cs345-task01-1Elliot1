@@ -27,16 +27,15 @@ public class BankAccount {
     }
 
     /**
-     * Checks if amount is 
-     * 1) The amount is positive
-     * 2) The amount has at most two decimal places.
+     *Checks if
+     *The amount is positive
+     *The amount has at most two decimal places.
      *
      * @param amount the monetary amount to check
      * @return true if the amount is positive and has up to two decimal places,
      * false otherwise.
      */
     public static boolean isAmountValid(double amount) {
-    // 1) Check strictly positive
     if (amount <= 0) {
         return false;
     }
