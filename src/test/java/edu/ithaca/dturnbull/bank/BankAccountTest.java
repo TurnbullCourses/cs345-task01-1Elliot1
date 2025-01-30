@@ -64,6 +64,8 @@ class BankAccountTest {
         assertThrows(IllegalArgumentException.class, () -> bankAccount.withdraw(-0.01));
         //Boundary: Withdraw amount is 1 less than 0 (int case) Tests Minimum invalid negative Withdrawal
         assertThrows(IllegalArgumentException.class, () -> bankAccount.withdraw(-1));
+        //Partition: Withdraw amount is 0 //Tests 0 Withdrawal
+        assertThrows(IllegalArgumentException.class, () -> bankAccount.withdraw(0));
 
         //Boundary: Withdraw amount is 1 less than balance (int case) //Tests just below the maximum valid Withdrawal
         bankAccount.withdraw(99);
@@ -72,9 +74,6 @@ class BankAccountTest {
         BankAccount newAccount = new BankAccount("z@x.y", 100);
         newAccount.withdraw(99.99);
         assertEquals(0.01, newAccount.getBalance(), 0.001);
-        //Partition: Withdraw amount is 0 //Tests 0 Withdrawal
-        bankAccount.withdraw(0);
-        assertEquals(1, bankAccount.getBalance(), 0.001);
         //Boundary: Withdraw amount is .01 (float case) //Tests just above the minimum valid Withdrawal
         bankAccount.withdraw(0.01);
         assertEquals(0.99, bankAccount.getBalance(), 0.001);
