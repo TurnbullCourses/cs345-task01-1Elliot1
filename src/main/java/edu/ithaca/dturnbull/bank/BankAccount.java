@@ -117,10 +117,26 @@ public class BankAccount {
             return false;
         }
 
-        return true; // If all checks pass, the email is valid
-    
+        return true; // If all checks pass, the email is valid    
+    }
 
+    /**
+     *Deposits a specified amount into a given account
+     *@param amount the amount to be deposited
+     *@throws IllegalArgumentException if the amount is invalid
+     */
+    public void deposit(double amount) {
+        // TODO: Implementation to follow once tests are written
+    }
 
-
+    /**
+     *Transfers a specified amount from this bank account to another target account.
+     *@param targetAccount the account to which the money will be transferred
+     *@param amount amount to transfer
+     *@throws IllegalArgumentException if the amount is invalid
+     *@throws InsufficientFundsException if this account does not have enough balance
+     */
+    public void transfer(BankAccount targetAccount, double amount) throws InsufficientFundsException {
+        // TODO: Implementation to follow once tests are written
     }
 }
