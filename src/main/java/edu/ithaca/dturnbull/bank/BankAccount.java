@@ -137,6 +137,15 @@ public class BankAccount {
      *@throws InsufficientFundsException if this account does not have enough balance
      */
     public void transfer(BankAccount targetAccount, double amount) throws InsufficientFundsException {
-        // TODO: Implementation to follow once tests are written
+        if (!isAmountValid(amount)) {
+            throw new IllegalArgumentException(
+                "Transfer amount " + amount + " is invalid. Must be > 0 and up to two decimals."
+            );
+        }
+        if (amount > balance) {
+            throw new InsufficientFundsException("Not enough funds to transfer " + amount);
+        }
+        this.balance -= amount;
+        targetAccount.balance += amount;
     }
 }
