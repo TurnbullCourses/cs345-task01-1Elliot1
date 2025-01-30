@@ -36,8 +36,17 @@ public class BankAccount {
      * false otherwise.
      */
     public static boolean isAmountValid(double amount) {
-        // For now, always return false to force some failing tests.
+    // 1) Check strictly positive
+    if (amount <= 0) {
         return false;
+    }
+
+    double scaled = amount * 100;
+    if (Math.floor(scaled) != scaled) {
+        return false;
+    }
+
+    return true;
     }
 
     /**
