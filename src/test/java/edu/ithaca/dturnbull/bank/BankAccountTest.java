@@ -57,10 +57,10 @@ class BankAccountTest {
         //Boundary: Withdraw amount exceeds balance by 1 (int case) Tests just above maximum valid Withdrawal
         assertThrows(InsufficientFundsException.class, () -> bankAccount.withdraw(101));
         //Boundary: Withdraw amount is .01 less than 0 (float case) Tests Minimum invalid negative Withdrawal
-        assertThrows(InsufficientFundsException.class, () -> bankAccount.withdraw(-0.01));
+        assertThrows(IllegalArgumentException.class, () -> bankAccount.withdraw(-0.01));
         //Boundary: Withdraw amount is 1 less than 0 (int case) Tests Minimum invalid negative Withdrawal
-        assertThrows(InsufficientFundsException.class, () -> bankAccount.withdraw(-1));
-
+        assertThrows(IllegalArgumentException.class, () -> bankAccount.withdraw(-1));
+        //TODO: Try withdrawal of exact balance, too many decimals, 
 
         //Boundary: Withdraw amount is 1 less than balance (int case) //Tests just below the maximum valid Withdrawal
         bankAccount.withdraw(99);
@@ -90,8 +90,6 @@ class BankAccountTest {
     @Test
     void isEmailValidTest(){
 
-        // hello testing git 
-
         //Invalid Test Cases
         //Partition: Empty string
         assertFalse(BankAccount.isEmailValid(""), "Emails must be invalid if they are blank");         // empty string
@@ -118,6 +116,8 @@ class BankAccountTest {
         //Partition: Invalid characters in domain
         assertFalse(BankAccount.isEmailValid("hello@ithac#.edu"), "Emails must be invalid if the domain contains an invalid special character");
 
+
+
         //Valid Test Cases
         //Partition: legal dash in domain
         assertTrue(BankAccount.isEmailValid("email@itha-ca.edu"), "Emails should be valid if domain contains a dash");
@@ -129,7 +129,7 @@ class BankAccountTest {
         assertTrue(BankAccount.isEmailValid("elliot.oconnor@ithaca.edu"), "Emails must be valid if username contains periods (they should be ignored)");
         //Boundary: shortest legal email
         assertTrue(BankAccount.isEmailValid( "a@b.c"));   // valid email address
-
+        
     }
 
     @Test

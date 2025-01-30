@@ -28,7 +28,8 @@ public class BankAccount {
 
     /**
      * @post reduces the balance by amount if amount is non-negative and smaller than balance
-     * @throws InsufficientFundsException if amount is negative or greater than balance
+     * @throws InsufficientFundsException if amount is greater than balance
+     * @throws IllegalArgumentException if amount is negative
      */
     public void withdraw (double amount) throws InsufficientFundsException{
         if (amount <= balance){
@@ -45,8 +46,7 @@ public class BankAccount {
         if (email == null || email.isEmpty()) {
         return false;
         }
-        
-        
+
         // Split into prefix and domain part
         String[] parts = email.split("@");
         if (parts.length != 2) { // Must contain exactly one '@'
