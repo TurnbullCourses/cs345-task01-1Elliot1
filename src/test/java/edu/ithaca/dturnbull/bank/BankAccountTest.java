@@ -207,4 +207,40 @@ class BankAccountTest {
 
     }
 
+    @Test
+    void transferTest() throws InsufficientFundsException {
+        BankAccount source = new BankAccount("source@abc.com", 200);
+        BankAccount target = new BankAccount("target@xyz.com", 100);
+
+        //Invalid Partition: Negative transfer
+        assertThrows(IllegalArgumentException.class,
+            () -> source.transfer(target, -0.01),
+            "Transferring a negative amount should be invalid");
+        //Invalid Boundary Case: Just below minimum should throw error
+        assertThrows(IllegalArgumentException.class,
+            () -> source.transfer(target, 0.0),
+            "Transferring zero should be invalid (must be > 0)");
+        //Invalid Boundary Case: Transfer of number with one more than acceptable amount of decimals
+        assertThrows(IllegalArgumentException.class,
+            () -> source.transfer(target, 1.234),
+            "Transferring 1.234 (3 decimals) should be invalid");
+        //Invalid Partition: Transfer of many decimals should be invalid
+        assertThrows(IllegalArgumentException.class,
+        () -> source.transfer(target, 1.234567891011121314151617181920),
+        "Transferring many decimals should be invalid");
+
+        //Valid Partition: Transfering of nominal value within range of balance should work
+        //(Check both source decreases and target increases)
+        source.transfer(target, 50.50);
+        assertEquals(149.50, source.getBalance(), 0.001,
+            "Source should be 149.50 after transferring out 50.50");
+        assertEquals(150.50, target.getBalance(), 0.001,
+            "Target should be 150.50 after receiving 50.50");
+
+        //Invalid Partition: Transfering more than current balance should throw exception
+        assertThrows(InsufficientFundsException.class,
+            () -> source.transfer(target, 500),
+            "Transferring 500 from a source with only 149.50 left should fail");
+    }
+
 }
