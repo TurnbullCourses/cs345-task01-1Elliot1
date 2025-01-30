@@ -175,4 +175,36 @@ class BankAccountTest {
             "Should throw for amounts with more than 2 decimals");
     }
 
+    @Test
+    void depositTest() {
+        BankAccount bankAccount = new BankAccount("a@b.com", 100);
+        //Invalid Partition: Negative amount, just under minimum should throw error
+        assertThrows(IllegalArgumentException.class,
+            () -> bankAccount.deposit(-0.01),
+            "Deposit of -0.01 should be invalid");
+        //Invalid Boundary Case:Just below minimum should throw error
+        assertThrows(IllegalArgumentException.class,
+            () -> bankAccount.deposit(0.0),
+            "Deposit of 0.0 should be invalid (not strictly positive)");
+        //Invalid Boundary Case: Deposit of number with one more than acceptible amount of decimals
+        //should throw error
+        assertThrows(IllegalArgumentException.class,
+            () -> bankAccount.deposit(1.234),
+            "Deposit of 1.234 has 3 decimals, should be invalid");
+        //Invalid Partition: Deposit of many decimals should be invalid
+        assertThrows(IllegalArgumentException.class,
+            () -> bankAccount.deposit(3.14159265358979323846264338327950),
+            "Deposit has too many decimals, should be invalid");
+
+        //Valid Border Case: Deposit of 0.01 should be valid
+        bankAccount.deposit(0.01);
+        assertEquals(100.01, bankAccount.getBalance(), 0.001,
+            "Balance should be 100.01 after depositing 0.01");
+        //Valid Partition: Nominal deposit of 50.75 should be valid
+        bankAccount.deposit(50.75);
+        assertEquals(150.76, bankAccount.getBalance(), 0.001,
+            "Balance should be 150.76 after depositing 50.75");
+
+    }
+
 }
