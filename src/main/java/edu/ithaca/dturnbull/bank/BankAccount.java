@@ -126,7 +126,12 @@ public class BankAccount {
      *@throws IllegalArgumentException if the amount is invalid
      */
     public void deposit(double amount) {
-        // TODO: Implementation to follow once tests are written
+        if (!isAmountValid(amount)) {
+            throw new IllegalArgumentException(
+                "Deposit amount " + amount + " is invalid. Must be > 0 and up to two decimals."
+            );
+        }
+        balance += amount;
     }
 
     /**
