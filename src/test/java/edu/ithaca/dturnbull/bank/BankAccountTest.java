@@ -132,6 +132,27 @@ class BankAccountTest {
     }
 
     @Test
+    void isAmountValidTest() {
+        //Negtative amounts throws false
+        //Boundary and Representative values
+        assertFalse(BankAccount.isAmountValid(-0.01), "Negative float amount should be invalid.");
+        assertFalse(BankAccount.isAmountValid(-100.00), "Negative integer-based amount should be invalid.");
+        //Zero throws false, since not strictly positive
+        //Boundary
+        assertFalse(BankAccount.isAmountValid(0.00), "Zero is not strictly positive, should be invalid.");
+        //Positive with up to 2 decimals throws true
+        //Boundary and typical values
+        assertTrue(BankAccount.isAmountValid(1.0), "1.0 is a positive amount with 1 decimal place.");
+        assertTrue(BankAccount.isAmountValid(2.5), "2.5 is a positive amount with 1 decimal place.");
+        assertTrue(BankAccount.isAmountValid(10.50), "10.50 is a positive amount with 2 decimals.");
+        assertTrue(BankAccount.isAmountValid(0.01), "0.01 is smallest positive with 2 decimals.");
+        //Positive with more than 2 decimals throws false
+        //Boundary and Representative values
+        assertFalse(BankAccount.isAmountValid(1.234), "1.234 has 3 decimals, should be invalid.");
+        assertFalse(BankAccount.isAmountValid(999.9999), "999.9999 has 4 decimals, should be invalid.");
+    }
+
+    @Test
     void constructorTest() {
         BankAccount bankAccount = new BankAccount("a@b.com", 200);
 

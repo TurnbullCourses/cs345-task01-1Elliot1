@@ -27,6 +27,20 @@ public class BankAccount {
     }
 
     /**
+     * Checks if amount is 
+     * 1) The amount is positive
+     * 2) The amount has at most two decimal places.
+     *
+     * @param amount the monetary amount to check
+     * @return true if the amount is positive and has up to two decimal places,
+     * false otherwise.
+     */
+    public static boolean isAmountValid(double amount) {
+        // For now, always return false to force some failing tests.
+        return false;
+    }
+
+    /**
      * @post reduces the balance by amount if amount is non-negative and smaller than balance
      * @throws InsufficientFundsException if amount is greater than balance
      * @throws IllegalArgumentException if amount is negative
